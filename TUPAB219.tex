@@ -1,0 +1,275 @@
+% !TeX spellcheck = en_GB
+% !TeX program = lualatex
+%
+% v 2.3  Feb 2019   Volker RW Schaa
+%		# changes in the collaboration therefore updated file "jacow-collaboration.tex"
+%		# all References with DOIs have their period/full stop before the DOI (after pp. or year)
+%		# in the author/affiliation block all ZIP codes in square brackets removed as it was not %         understood as optional parameter and ZIP codes had bin put in brackets
+%       # References to the current IPAC are changed to "IPAC'19, Melbourne, Australia"
+%       # font for ‘url’ style changed to ‘newtxtt’ as it is easier to distinguish "O" and "0"
+%
+\documentclass[a4paper,
+               %boxit,        % check whether paper is inside correct margins
+               %titlepage,    % separate title page
+               %refpage       % separate references
+               %biblatex,     % biblatex is used
+               keeplastbox,   % flushend option: not to un-indent last line in References
+               %nospread,     % flushend option: do not fill with whitespace to balance columns
+               %hyphens,      % allow \url to hyphenate at "-" (hyphens)
+               %xetex,        % use XeLaTeX to process the file
+               %luatex,       % use LuaLaTeX to process the file
+               ]{jacow}
+%
+% ONLY FOR \footnote in table/tabular
+%
+\usepackage{pdfpages,multirow,ragged2e} %
+%
+% CHANGE SEQUENCE OF GRAPHICS EXTENSION TO BE EMBEDDED
+% ----------------------------------------------------
+% test for XeTeX where the sequence is by default eps-> pdf, jpg, png, pdf, ...
+%    and the JACoW template provides JACpic2v3.eps and JACpic2v3.jpg which
+%    might generates errors, therefore PNG and JPG first
+%
+\makeatletter%
+	\ifboolexpr{bool{xetex}}
+	 {\renewcommand{\Gin@extensions}{.pdf,%
+	                    .png,.jpg,.bmp,.pict,.tif,.psd,.mac,.sga,.tga,.gif,%
+	                    .eps,.ps,%
+	                    }}{}
+\makeatother
+
+% CHECK FOR XeTeX/LuaTeX BEFORE DEFINING AN INPUT ENCODING
+% --------------------------------------------------------
+%   utf8  is default for XeTeX/LuaTeX
+%   utf8  in LaTeX only realises a small portion of codes
+%
+\ifboolexpr{bool{xetex} or bool{luatex}} % test for XeTeX/LuaTeX
+ {}                                      % input encoding is utf8 by default
+ {\usepackage[utf8]{inputenc}}           % switch to utf8
+
+\usepackage[USenglish]{babel}
+
+%
+% if BibLaTeX is used
+%
+\ifboolexpr{bool{jacowbiblatex}}%
+ {%
+  \addbibresource{jacow-test.bib}
+  \addbibresource{biblatex-examples.bib}
+ }{}
+\listfiles
+
+%%
+%%   Lengths for the spaces in the title
+%%   \setlength\titleblockstartskip{..}  %before title, default 3pt
+%%   \setlength\titleblockmiddleskip{..} %between title + author, default 1em
+%%   \setlength\titleblockendskip{..}    %afterauthor, default 1em
+
+\begin{document}
+
+\title{Equilibrium and Nonlinear Beam Dynamics Parameters from Sirius Turn-by-Turn BPM Data}
+
+\author{X. R. Resende\thanks{ximenes.resende@lnls.br}, M. B. Alves, F. H. de Sá, L. Lin \\ Brazilian Synchrotron Light Laboratory (LNLS), Campinas, Brazil}
+
+\maketitle
+
+\begin{abstract}
+A considerable amount of beam information is conveyed by Turn-by-Turn (TbT) data of Beam Position Monitors (BPM). In this work such data sets are analyzed for Sirius, the Brazilian 4\textsuperscript{th} Generation \SI{3}{GeV} synchrotron light source. In particular, equilibrium and nonlinear beam dynamics parameters determining decoherence patterns in TbT position data are estimated and compared with corresponding values of the nominal storage ring model.
+\end{abstract}
+
+\section{Introduction}
+
+In accelerators, Beam Position Monitors (BPMs) are arguably the main diagnostics tools available. In particular, Turn-by-Turn (TbT) data, provided by modern BPM electronics, are very rich in information about the beam, narrowing considerably the gap between real machine data that accelerator physicists have access to as compared to data from our tracking models.
+
+At Sirius, BPM electronics also have such TbT capabilities\cite{Marques:IBIC18-TUOC03}. They were fundamental in providing beam positions for commissioning of Sirius accelerators and transport lines\cite{ipac21-status}, but only recently they have been applied in trying to characterize the storage ring optics and beam parameters. This paper summarizes these recent preliminary efforts.
+
+In this study we used TbT measurements to characterize machine beta functions, to calculate nonlinear dynamics horizontal and vertical tune-shifts and to estimate energy spread. Also, we discuss the shortcomings of our experimental setup to access other equilibrium parameters such as emittances.
+
+\section{Experimental Conditions}
+
+Sirius has an on-axis injection dipolar kicker in ring non-dispersive sector 01SA and a vertical pinger in dispersive sector 19C4, installed in April 2021 machine shutdown. These are, respectively, the horizontal and vertical pingers used to excite beam oscillations acquired in TbT BPM data. Their half-sinusoidal pulse durations are \SI{2.19}{\micro\second} and \SI{1.63}{\micro\second} (beam revolution frequency is \SI{1.76}{\micro\second}), and pulse-to-pulse nominal peak variations of \SI{0.2}{\percent}. 
+
+For the experiment we used a \SI{2}{\milli\ampere} beam of \SI{50}{\nano\second} (25~bunches) duration, injected in linac multi-bunch mode, as this was then the optimized injection mode. This mode offered an off-the-shelf beam filling pattern with high BPM signal while not crossing collective instabilities thresholds. This beam was kicked to various amplitudes up to \SI{0.5}{\micro\meter\radian} (\SI{3}{\milli\meter} in horizontal and \SI{2}{\milli\meter} in vertical plane). Pinger waveform profile flatness does not accommodate the entire multibunch beam and thus initial amplitude spreads from the kicker action is expected. This kick spread for the \SI{50}{\nano\second} beam is estimated to be \SI{0.02}{\percent} and \SI{0.03}{\percent} for pingerH and pingerV, respectively.
+
+In each measurement beam oscillations were excited only in one plane, either horizontal or vertical, with the corresponding pinger. And for each excitation amplitude, the pinger was pulsed 10 consecutive times and the corresponding TbT data of 2000 turns were acquired and averaged.
+
+As a final note, measured beam positions in BPMs have intrinsic geometric nonlinearities. At Sirius these nonlinearities were corrected using a 9\textsuperscript{th} order 2D polynomial, similar to what has been done in Alba\cite{alba}. Simulations show that correction residuals are well below \SI{1}{\percent} for the range of positions accessed in our experiment\cite{daniel} (\SI{3}{\milli\meter} for horizontal and (\SI{2}{\milli\meter} for vertical kicks).
+
+\section{TbT Decoherence Model}
+
+Data from TbT are processed voltage signals from BPM button antennas induced by the beam charged particles. The data thus convey information about the beam ensemble as a whole. Even if the beam particles are initially synchronized, as it is the case for impinged one-turn kicks, they become de-synchronized as they move around the ring. This is due to the fact that, in equilibrium, the beam occupies a finite volume in 6D phase-space and, since there are nonlinearities in the dynamics, the beam thus presents tune spread. Particles oscillating with different frequencies will lead to decohering signal, as they spread in phase-space.
+
+This effect can be nicely modeled using simple and standard single-particle dynamics\cite{laurent,lee}. In beta-normalized coordinates ($\bar{x} \equiv x / \sqrt{\beta}$) the position of a single particle at the $i$\textsuperscript{th} BPM and at turn $n$ is
+\begin{equation}
+\bar{x}^{\,i} (n) = \sqrt{I_x} \cos \left( 2\pi n \nu_{0x} + \varphi^{\,i} + \phi_x + \Delta \psi \right) + \bar{\eta}_x^{\,i}\delta_\epsilon.
+\end{equation}
+We use a model for which the betatron phase advance $\Delta\psi$ depends linearly on the particle invariant actions and energy shift $\delta_\epsilon$:
+\begin{equation}
+\label{tuneshift}
+\Delta \psi (\vec{I}) / (2\pi) = \xi_x \delta_\epsilon + k_{xx} I_x + k_{xy} I_y,
+\end{equation}
+where  $\vec{I} = (I_x, I_y, \delta_\epsilon)$. A sudden kick by pingers (at turn 0 by definition) is represented in this notation as a shift in action $\vec{I} \rightarrow \vec{I} + \vec{J}$, with $J_x=x^2_0/\sqrt{\beta}$, where $x^2_0$ is the initial amplitude, for the horizontal plane for example. BPMs TbT measured position $\left< \bar{x}_n^{\,i} \right>$ is the sum of induced signals from all particles distributed in phase-space $\vec{I}, \vec{\phi}=(\phi_x,\phi_y,\tau_\epsilon)$:
+\begin{equation}
+\label{integration}
+\left< \bar{x}_n^{\,i} \right> = \int{d\vec{I}\,d\vec{\phi} \; \rho(\vec{I}, \vec{\phi})} \; \bar{x}^{\,i} (n, \vec{I} + \vec{J}, \vec{\phi}).
+\end{equation}
+
+Integration in Eq.\ref{integration} can be carried out analytically\cite{laurent} with a linear tune-shift model (Eq.\ref{tuneshift}). For a horizontal kick, for example, $\vec{J} = (J_x,0,0)$, and the result is
+\begin{equation}
+    \left< \bar{x}_n^{\,i} \right> = - \sqrt{J_x} \sin \left( \psi_x + \varphi_x^{\,i}\right) F_{\xi_x} F_{xx} F_{xy} .
+\end{equation}
+A similar expression applies to the vertical plane by exchanging $x$ and $y$ indices. This result is composed of 4 terms: a betatron-like oscillatory term whose scale is defined by the kick-impinged action $J_x$, and three decoherence factors. The betatron-like term depends on the BPM constant phase $\varphi^i_n$ and on the phase 
+\begin{eqnarray}
+    \psi_x & = & 2\pi n \nu_{0x} + 2 \tan^{-1} \theta_{xx} + 2 \tan^{-1} \theta_{xy} + \\
+           & + & \frac{J_x}{2\epsilon_x} \frac{\theta_{xx}}{1 + \theta^2_{xx}}. \nonumber
+\end{eqnarray}
+The 3 decoherence factors are
+\begin{eqnarray}
+    \label{decoh}
+    F_{\xi_x} & = & \exp \left( - \frac{1}{8} \theta^{2}_{\xi_x} \right) \nonumber \\
+    F_{xx}    & = & \frac{1}{1 + \theta^{2}_{xx}} \exp \left( - \frac{J_x}{2\epsilon_x}  \frac{\theta^{2}_{xx}}{1 + \theta^{2}_{xx}} \right)  \\
+    F_{xy}    & = & \frac{1}{1 + \theta^{2}_{xy}}, \nonumber
+\end{eqnarray}
+with turn-dependent parameters
+\begin{eqnarray}
+    \label{parameters}
+    \theta_{\xi_x} & = & 4\pi \left( \xi_x\sigma_\delta \right) \sin\left( \pi \nu_s n \right) / \, (\pi \nu_s) \nonumber \\
+    \theta_{xx}    & = & 4\pi \left( k_{xx}\epsilon_x \right) n \\
+    \theta_{xy}    & = & 4\pi \left( k_{xy}\epsilon_y \right) n. \nonumber 
+\end{eqnarray}
+% These factors become smaller with increasing $n$, describing decoherence that sets in as the beam goes around the ring. They all reduce to value 1 when $n=0$ as expected, since the particle motions are in phase right after the kick and move coherently for a while. Parameters in Eq.\ref{parameters} depend on products between a tune-shift coefficient and a beam equilibrium parameter: $\xi_x\sigma_\delta$, $k_{xx}\epsilon_x$ and $k_{yy}\epsilon_y$ (chromaticity, energy spread, tune-shifts with amplitudes coefficients, horizontal and vertical equilibrium emittances).
+
+In our model we neglect transverse and betatron-synchrotron couplings, as these are small effects for the storage ring optics used. We also neglected damping of the TbT signal within the time scale of acquired 2000 turns, since damping times are longer: 9600 and 12500 turns for the horizontal and vertical planes, respectively.
+
+\subsection{TbT Data Fitting Procedure}
+
+All decoherence factors have distinct time scales that conveniently allow for separate data region and parameter fitting. On the shortest scale, $\approx \nu^{-1}_x$, the oscillatory term is used for fitting the action $J_x$, BPM phases $\varphi^i_x$ and amplitude-shifted tune $\nu_x = \nu_{x0} + \delta\nu_x$:
+\begin{eqnarray}
+    \nu_x & \equiv & \frac{1}{2\pi} \frac{\partial \psi_x}{\partial n}  = \nu_{x0} \; + \nonumber \\
+    \label{tune}
+                & + & k_{xx} \left( \frac{4\epsilon_x + J_x (1 - \theta^{2}_{xx}) }{1 + \theta^{2}_{xx}} \right) + \frac{4 k_{xy} \epsilon_y}{1 + \theta^{2}_{xy}} \\
+J_x & = & \frac{\sum_i{(x_0^{\,i})^{4}}}{\sum_i{(x_0^{\,i})^{2} \; \beta^{\,i}_{x,model} }}, 
+\end{eqnarray}
+where the last equation is obtained when the scale of TbT beta is matched to fit nominal beta $\beta_{x,model}$ of the model at BPMs. Once the transverse tune $\nu_x$ for various kick-impinged actions $J_x$ is fitted, $k_{xx}$ (and $k_{yy}$ for vertical) can be obtained, for Eq. \ref{tune} implies
+\begin{equation}
+    \lim_{n \to 0} \nu_x = \nu_{x0} + 4 k_{xx} \epsilon_x + 4 k_{xy} \epsilon_y + k_{xx} J_x
+\end{equation}
+For the next time scale, $\approx \nu^{-1}_s$, factor $F_{\xi_x}$ can be brought in the fitting. This allows for estimating the energy spread using independently measured $\xi_x/\xi_y = \num{2.19}/\num{2.31} \pm \num{0.03}$.
+
+Finally there are 3 time scales associated with $F_{xx}$ and $F_{xy}$, two of which are, for nominal parameters, much longer than the previous scales and one that depends on $J_x$. If the experimental setup is good enough one can try to access emittances $\epsilon_x$ and $\epsilon_y$ from fitting TbT data in this time scale.
+
+\section{Fit Results}
+
+For the linear optics fitting, the first time scale discussed above, we took the FFT value for $\nu_x$ as initial guess and solved the linear least square system for $\phi^i_{x}$ and $x_0^i$. Then we refined the search of these parameters using a Levenberg-Marquardt least square solver for fitting data for $n < 3\nu^{-1}_x$. Fitting quality is rather good, with residuals of the order of \SI{4}{\percent} for all TbT data. The first results are nonlinear dynamics coefficients $k_{xx}$ and $k_{yy}$ extracted from fitted tunes $\nu_{x}(Jx)$/$\nu_{y}(Jy)$, as shown in Fig. \ref{fig:tune}
+\begin{figure}[!htb]
+  \centering
+  \includegraphics*[width=.7\columnwidth]{TUPAB219_fig1.png}
+  \caption{Tune-shift coefficients from TbT(T) fit compared to nominal model(M). Unit of values in legend is \SI{}{\milli\meter}$^{-1}$}
+  \label{fig:tune}
+\end{figure}
+As prescribed above, TbT beta functions can also be computed from fitted $J_x/J_y$ and amplitudes $x^i_0$/$y^i_0$. Their beta-beats w.r.t. nominal model show similar amplitudes as compared to traditional quadrupole strength variation measurements, as can be seen in Fig. \ref{fig:betax} and \ref{fig:betay}. Vertical beta functions at a few BPMs showed larger deviations from nominal consistently across excitation amplitudes, which we are still investigating.
+\begin{figure}[!htb]
+  \centering
+  \includegraphics*[width=.7\columnwidth]{TUPAB219_fig2.png}
+  \caption{(M)easured and (T)bT fit comparison of $\beta_x$-beat.}
+  \label{fig:betax}
+\end{figure}
+\begin{figure}[!htb]
+  \centering
+  \includegraphics*[width=.7\columnwidth]{TUPAB219_fig3.png}
+  \caption{(M)easured and (T)bT fit comparison of $\beta_y$-beat.}
+  \label{fig:betay}
+\end{figure}
+
+Once TbT model parameters were fitted for TbT data within the $\nu^{-1}_x$ time scale, we proceeded with the chromaticity decoherence parameter fit in the $n < 1.2 \, \nu^{-1}_s$ time scale through the factor $F_{\xi_x}$, namely the energy spread $\sigma_\delta$. Fig. \ref{fig:residual} shows an example in the set of good fit results, for which $J_x$/$J_y$ is not so large. 
+\begin{figure}[!htb]
+  \centering
+  \includegraphics*[width=.7\columnwidth]{TUPAB219_fig4.png}
+  \caption{Decoherence factor $F_\xi$ fitted to Horizontal TbT data. Comparison for BPM index 000.}
+  \label{fig:residual}
+\end{figure}
+For TbT data with larger oscillation amplitudes, the time scale associated with $F_{xx}$ starts approaching $\nu^{-1}_s$ and thus, compromising the fit value of the chromaticity decoherence parameter. As the tune-shift decoherence factor $F_{xx}$ present in the data showed to be much larger than we estimated from nominal $\epsilon_x$ and measured or model $k_{xx}$, even for moderately small $J_x$, as in Fig. \ref{fig:residual}, we can already observe envelope reduction which is not compatible with chromaticity decoherence and thus must be coming from tune-shift decoherence. To mitigate this kind of decoherence so that $\sigma_\epsilon$ could be fitted within reasonable $J_x$ amplitudes we also fitted a simplified tune-shift-like decoherence factor of the form $\exp(-n^2/{n^*}^2)$, as is apparent in Fig. \ref{fig:residual}. Using this procedure we were able to fit a larger action range and compute the energy spread from TbT data of horizontally and vertically kicked beam, as show in Fig. \ref{fig:espread}
+\begin{figure}[!htb]
+  \centering
+  \includegraphics*[width=.7\columnwidth]{TUPAB219_fig5.png}
+  \caption{Energy spread fit for horizontal and vertical TbT data.}
+  \label{fig:espread}
+\end{figure}
+From Fig. \ref{fig:espread} we extrapolated $J \rightarrow 0$ energy spreads of \SI{0.088}{\percent} for horizontal data - not too far from the \SI{0.085}{\percent} nominal value - and \SI{0.098}{\percent} for the vertical plane. We expected a constant $\sigma_\epsilon$, as this is a robust equilibrium parameter defined only by dipole fields and beam radiation. Nonetheless, value from fitting showed peculiar features: systematic dependence on $J_x/J_y$ and a larger energy spread value extrapolated to $J \rightarrow 0$ for the vertical plane. Our nominal model shows action-dependent chromaticities of $\delta\xi_{x/y}/\delta J_{x/y} \approx \SI{-0.2/-0.8}{\per\micro\meter\per\radian}$ and this kind of second-order tune-shift could explain the linear behaviour at small $J$. Also, the fit of dispersion functions using LOCO\cite{murilo} indicates that needed momentum compaction factor is \SI{4}{\percent} higher then nominal value. If consolidated, this would bring fitted energy spreads closer to the nominal value, once measured chromaticities calculated from tune-shifts with RF frequency are corrected. Divergence of fitted $\nu_s$ for the last 5 vertical points shows that $n^*$ time-scale is approaching and spoiling the fit.
+Finally, we tried to fit emittances by considering tune-shift with amplitude decoherence factors (Eqs. \ref{decoh}). $F_{xy}/F_{yx}$ have time scales much longer than all other physical time scales and their contribution to decoherence cannot be resolved. TbT Data for larger actions showed decoherence effects stronger than was expected considering values around nominal emittances. Fits of $\epsilon_x$ yielded values \num{5}-\num{10}$\times$ the nominal one. Much latter we realised that the TbT pulse-averaging we used, as for TbT orbit analysis, is most probably the culprit that explains the observed stronger decoherence, due to pingers' pulse-to-pulse variation.
+
+\section{Final Remarks}
+
+With our decoherence TbT model we were able to do a preliminary TbT analysis and successfully estimate beta functions, nonlinear dynamics coefficients of tune-shifts, as well as to estimate the value of the energy spread to be only \SI{9}{\percent} off the nominal value, but within error margin.
+Due to improper TbT acquisition conditions we were not able to estimate emittances and might have had vertical data with large $J_y$ compromised as well. We intend to repeat this analysis as soon as possible, reusing tools and knowledge developed, but with better controlled conditions, without the influence of pulse-to-pulse kick variations of pingers. We also plan to study feasibility of acquiring data using the single-bunch mode, albeit smaller currents and weaker TbT signals.
+Also, for beta function estimates, we intend to continua PCA-type analysis that we have already started, as this technique has the advantage of filtering out noise from data in a more robust manner.
+
+
+%
+% only for "biblatex"
+%
+\ifboolexpr{bool{jacowbiblatex}}%
+	{\printbibliography}%
+	{%
+	% "biblatex" is not used, go the "manual" way
+	
+	\begin{thebibliography}{99}   % Use for  10-99  references
+% 	\begin{thebibliography}{9} % Use for 1-9 references
+	
+	%\cite{Marques:IBIC18-TUOC03}
+    \bibitem{Marques:IBIC18-TUOC03}
+       S. R. Marques, G. B. M. Bruno, L. M. Russo, H. A. Silva, and D. O. Tavares,
+       \textquotedblleft{Commissioning of the Open Source Sirius BPM Electronics}\textquotedblright,
+       in \emph{Proc. 7th Int. Beam Instrumentation Conf. (IBIC’18)}, Shanghai, China, Sep. 2018, pp. 196--203.
+       \url{doi:10.18429/JACoW-IBIC2018-TUOC03}
+    
+    % - artigo status do sirius
+    \bibitem{ipac21-status}
+       L. Liu, M. B. Alves, F. H. de Sá, A. C. S. Oliveira, and X. R. Resende,
+       \textquotedblleft{Sirius Commissioning Results and Operation Status}\textquotedblright,
+       presented at the 12th Int. Particle Accelerator Conf. (IPAC’21), Campinas, Brazil, May 2021, paper MOXA03, this conference.    
+       
+     %\cite{Nosych:IBIC15-TUPB047}
+    \bibitem{alba}
+        A. A. Nosych, U. Iriso, and J. Olle,
+       \textquotedblleft{Electrostatic Finite-element Code to Study Geometrical Nonlinear Effects of BPMs in 2D}\textquotedblright,
+       in \emph{Proc. 4th Int. Beam Instrumentation Conf. (IBIC’15)}, Melbourne, Australia, Sep. 2015, pp. 418--422.
+       \url{doi:10.18429/JACoW-IBIC2015-TUPB047}
+       
+    \bibitem{daniel}
+       D. O. Tavares, Private communication.
+
+
+    % - laurent thesis
+    \bibitem{laurent}
+        L. Nadolski, “Application de l'Analyse en Fréquence à l'Etude de la Dynamique des Sources de Lumière”, Ph.D. thesis, Institut de Mécanique Céleste,
+ 	    Universite Paris XI, UFR Scientifique D'Orsay, Paris, France, 2001. pp. 118-126, 
+        % \url{https://tel.archives-ouvertes.fr/tel-00001561}
+	
+	% - original lee
+	\bibitem{lee}
+	    S.Y. Lee: "Review of Nonlinear Beam Dynamics Experiments,in Proceedings of Nonlinear Problems in Accelerator Physics Workshop, Institute of Physics Series Number131, Berlin, Germany, 1992. pp. 249-265
+    
+    
+    % - artigo murilo
+    \bibitem{murilo}
+       M. B. Alves
+       \textquotedblleft{Optics Corrections with LOCO on Sirius Storage Ring}\textquotedblright,
+       presented at the 12th Int. Particle Accelerator Conf. (IPAC’21), Campinas, Brazil, May 2021, paper MOPAB260, this conference.    
+       
+    
+
+    
+    
+   
+	\end{thebibliography}
+} % end \ifboolexpr
+%
+% for use as JACoW template the inclusion of the ANNEX parts have been commented out
+% to generate the complete documentation please remove the "%" of the next two commands
+% 
+%\newpage
+
+%\include{annexes-A4}
+
+\end{document}
